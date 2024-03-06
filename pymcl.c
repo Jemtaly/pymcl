@@ -21,15 +21,17 @@ PyDoc_STRVAR(G1__doc__,
     "Basic usage:\n"
     "\n"
     "G1(s: str) -> G1\n"
-    "G1.__mul__(self: G1, other: G1) -> G1\n"
-    "G1.__truediv__(self: G1, other: G1) -> G1\n"
-    "G1.__invert__(self: G1) -> G1\n"
-    "G1.__pow__(self: G1, other: Fr) -> G1\n"
+    "G1.__str__(self: G1) -> str\n"
+    "G1.__add__(self: G1, other: G1) -> G1\n"
+    "G1.__aub__(self: G1, other: G1) -> G1\n"
+    "G1.__neg__(self: G1) -> G1\n"
+    "G1.__mul__(self: G1, other: Fr) -> G1\n"
     "G1.__eq__(self: G1, other: G1) -> bool\n"
     "G1.__ne__(self: G1, other: G1) -> bool\n"
     "G1.__hash__(self: G1) -> int\n"
     "G1.serialize(self: G1) -> bytes\n"
     "G1.deserialize(b: bytes) -> G1\n"
+    "G1.hash(b: bytes) -> G1\n"
     "\n"
     "Most of the basic arithmetic operations apply. Please note that many of them\n"
     "do not make sense between groups, and that not all of these are checked for.");
@@ -76,11 +78,28 @@ int G1_init(PyObject *self, PyObject *args, PyObject *kwds) {
     return 0;
 }
 
+PyObject *G1_from_bytes(PyObject *type, PyObject *args) {
+    // required a byte string
+    PyObject *bytes;
+    if (!PyArg_ParseTuple(args, "O!", &PyBytes_Type, &bytes)) {
+        PyErr_SetString(PyExc_TypeError, "could not parse arguments, should be a bytes object");
+        return NULL;
+    }
+    // build the result
+    G1 *g1_res = G1_create();
+    // convert the bytes to an element
+    Py_ssize_t size = PyBytes_Size(bytes);
+    char *string = PyBytes_AsString(bytes);
+    mclBnG1_hashAndMapTo(&g1_res->mcl_g1, string, size);
+    // return the element
+    return (PyObject *)g1_res;
+}
+
 PyObject *G1_str(PyObject *self) {
     // cast the argument
     G1 *g1_self = (G1 *)self;
     // get the string from the G1
-    char buffer[1024];
+    char buffer[240];
     Py_ssize_t length = mclBnG1_getStr(buffer, sizeof(buffer), &g1_self->mcl_g1, 10);
     // return the string
     return PyUnicode_FromStringAndSize(buffer, length);
@@ -111,7 +130,7 @@ Py_hash_t G1_hash(PyObject *self) {
 PyObject *G1_deserialize(PyObject *type, PyObject *args) {
     // required a byte string
     PyObject *bytes;
-    if (!PyArg_ParseTuple(args, "O", &bytes) || !PyBytes_Check(bytes)) {
+    if (!PyArg_ParseTuple(args, "O!", &PyBytes_Type, &bytes)) {
         PyErr_SetString(PyExc_TypeError, "could not parse arguments, should be a bytes object");
         return NULL;
     }
@@ -220,6 +239,7 @@ PyMethodDef G1_methods[] = {
     {"serialize", (PyCFunction)G1_serialize, METH_NOARGS, "Serializes the element to a byte string."},
     {"deserialize", (PyCFunction)G1_deserialize, METH_VARARGS | METH_CLASS, "Deserializes the element from a byte string."},
     {"isZero", (PyCFunction)G1_isZero, METH_NOARGS, "Checks if the element is the zero element."},
+    {"hash", (PyCFunction)G1_from_bytes, METH_VARARGS | METH_CLASS, "Hashes a byte string to a G1 element."},
     {NULL},
 };
 
@@ -310,15 +330,17 @@ PyDoc_STRVAR(G2__doc__,
     "Basic usage:\n"
     "\n"
     "G2(s: str) -> G2\n"
-    "G2.__mul__(self: G2, other: G2) -> G2\n"
-    "G2.__truediv__(self: G2, other: G2) -> G2\n"
-    "G2.__invert__(self: G2) -> G2\n"
-    "G2.__pow__(self: G2, other: Fr) -> G2\n"
+    "G2.__str__(self: G2) -> str\n"
+    "G2.__add__(self: G2, other: G2) -> G2\n"
+    "G2.__sub__(self: G2, other: G2) -> G2\n"
+    "G2.__neg__(self: G2) -> G2\n"
+    "G2.__mul__(self: G2, other: Fr) -> G2\n"
     "G2.__eq__(self: G2, other: G2) -> bool\n"
     "G2.__ne__(self: G2, other: G2) -> bool\n"
     "G2.__hash__(self: G2) -> int\n"
     "G2.serialize(self: G2) -> bytes\n"
     "G2.deserialize(b: bytes) -> G2\n"
+    "G2.hash(b: bytes) -> G2\n"
     "\n"
     "Most of the basic arithmetic operations apply. Please note that many of them\n"
     "do not make sense between groups, and that not all of these are checked for.");
@@ -365,11 +387,28 @@ int G2_init(PyObject *self, PyObject *args, PyObject *kwds) {
     return 0;
 }
 
+PyObject *G2_from_bytes(PyObject *type, PyObject *args) {
+    // required a byte string
+    PyObject *bytes;
+    if (!PyArg_ParseTuple(args, "O!", &PyBytes_Type, &bytes)) {
+        PyErr_SetString(PyExc_TypeError, "could not parse arguments, should be a bytes object");
+        return NULL;
+    }
+    // build the result
+    G2 *g2_res = G2_create();
+    // convert the bytes to an element
+    Py_ssize_t size = PyBytes_Size(bytes);
+    char *string = PyBytes_AsString(bytes);
+    mclBnG2_hashAndMapTo(&g2_res->mcl_g2, string, size);
+    // return the element
+    return (PyObject *)g2_res;
+}
+
 PyObject *G2_str(PyObject *self) {
     // cast the argument
     G2 *g2_self = (G2 *)self;
     // get the string from the G2
-    char buffer[1024];
+    char buffer[480];
     Py_ssize_t length = mclBnG2_getStr(buffer, sizeof(buffer), &g2_self->mcl_g2, 10);
     // return the string
     return PyUnicode_FromStringAndSize(buffer, length);
@@ -400,7 +439,7 @@ Py_hash_t G2_hash(PyObject *self) {
 PyObject *G2_deserialize(PyObject *type, PyObject *args) {
     // required a byte string
     PyObject *bytes;
-    if (!PyArg_ParseTuple(args, "O", &bytes) || !PyBytes_Check(bytes)) {
+    if (!PyArg_ParseTuple(args, "O!", &PyBytes_Type, &bytes)) {
         PyErr_SetString(PyExc_TypeError, "could not parse arguments, should be a bytes object");
         return NULL;
     }
@@ -509,6 +548,7 @@ PyMethodDef G2_methods[] = {
     {"serialize", (PyCFunction)G2_serialize, METH_NOARGS, "Serializes the element to a byte string."},
     {"deserialize", (PyCFunction)G2_deserialize, METH_VARARGS | METH_CLASS, "Deserializes the element from a byte string."},
     {"isZero", (PyCFunction)G2_isZero, METH_NOARGS, "Checks if the element is the zero element."},
+    {"hash", (PyCFunction)G2_from_bytes, METH_VARARGS | METH_CLASS, "Hashes a byte string to a G2 element."},
     {NULL},
 };
 
@@ -599,6 +639,7 @@ PyDoc_STRVAR(GT__doc__,
     "Basic usage:\n"
     "\n"
     "GT(s: str) -> GT\n"
+    "GT.__str__(self: GT) -> str\n"
     "GT.__mul__(self: GT, other: GT) -> GT\n"
     "GT.__truediv__(self: GT, other: GT) -> GT\n"
     "GT.__invert__(self: GT) -> GT\n"
@@ -658,7 +699,7 @@ PyObject *GT_str(PyObject *self) {
     // cast the argument
     GT *gt_self = (GT *)self;
     // get the string from the GT
-    char buffer[4096];
+    char buffer[1440];
     Py_ssize_t length = mclBnGT_getStr(buffer, sizeof(buffer), &gt_self->mcl_gt, 10);
     // return the string
     return PyUnicode_FromStringAndSize(buffer, length);
@@ -689,7 +730,7 @@ Py_hash_t GT_hash(PyObject *self) {
 PyObject *GT_deserialize(PyObject *type, PyObject *args) {
     // required a byte string
     PyObject *bytes;
-    if (!PyArg_ParseTuple(args, "O", &bytes) || !PyBytes_Check(bytes)) {
+    if (!PyArg_ParseTuple(args, "O!", &PyBytes_Type, &bytes)) {
         PyErr_SetString(PyExc_TypeError, "could not parse arguments, should be a bytes object");
         return NULL;
     }
@@ -901,6 +942,7 @@ PyDoc_STRVAR(Fr__doc__,
     "Basic usage:\n"
     "\n"
     "Fr(s: str) -> Fr\n"
+    "Fr.__str__(self: Fr) -> str\n"
     "Fr.__add__(self: Fr, other: Fr) -> Fr\n"
     "Fr.__sub__(self: Fr, other: Fr) -> Fr\n"
     "Fr.__neg__(self: Fr) -> Fr\n"
@@ -963,7 +1005,7 @@ PyObject *Fr_str(PyObject *self) {
     // cast the argument
     Fr *fr_self = (Fr *)self;
     // get the string from the Fr
-    char buffer[256];
+    char buffer[80];
     Py_ssize_t length = mclBnFr_getStr(buffer, sizeof(buffer), &fr_self->mcl_fr, 10);
     // return the string
     return PyUnicode_FromStringAndSize(buffer, length);
@@ -994,7 +1036,7 @@ Py_hash_t Fr_hash(PyObject *self) {
 PyObject *Fr_deserialize(PyObject *type, PyObject *args) {
     // required a byte string
     PyObject *bytes;
-    if (!PyArg_ParseTuple(args, "O", &bytes) || !PyBytes_Check(bytes)) {
+    if (!PyArg_ParseTuple(args, "O!", &PyBytes_Type, &bytes)) {
         PyErr_SetString(PyExc_TypeError, "could not parse arguments, should be a bytes object");
         return NULL;
     }
@@ -1244,7 +1286,7 @@ PyDoc_STRVAR(pymcl__doc__,
 PyObject *pairing(PyObject *self, PyObject *args) {
     // parse the arguments
     PyObject *lft, *rgt;
-    if (!PyArg_ParseTuple(args, "OO", &lft, &rgt) || !PyObject_TypeCheck(lft, &G1Type) || !PyObject_TypeCheck(rgt, &G2Type)) {
+    if (!PyArg_ParseTuple(args, "O!O!", &G1Type, &lft, &G2Type, &rgt)) {
         PyErr_SetString(PyExc_TypeError, "could not parse arguments, should be a G1 and a G2 element");
         return NULL;
     }

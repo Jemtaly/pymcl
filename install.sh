@@ -1,8 +1,7 @@
 #!/bin/bash
 echo "Installing pymcl..." &&
 sudo apt update &&
-sudo apt-get install -y libgmp-dev && 
-sudo apt-get install -y libomp-dev &&
+sudo apt-get install -y libgmp-dev &&
 git clone https://github.com/herumi/mcl &&
 cd mcl &&
 make -j4 &&

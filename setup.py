@@ -1,8 +1,12 @@
 #! /usr/bin/env python3
 
 from setuptools import setup, Extension
+from sys import platform
 
-pymcl_module = Extension("pymcl", sources=["pymcl.c"], include_dirs=["mcl/include"], extra_objects=["mcl/lib/libmclbn384_256.a", "mcl/lib/libmcl.a"], libraries=["stdc++"])
+if platform == "win32":
+    pymcl_module = Extension("pymcl", sources=["pymcl.c"], include_dirs=["mcl/include"], extra_objects=["mcl/lib/mclbn384_256.lib", "mcl/lib/mcl.lib"])
+else:
+    pymcl_module = Extension("pymcl", sources=["pymcl.c"], include_dirs=["mcl/include"], extra_objects=["mcl/lib/libmclbn384_256.a", "mcl/lib/libmcl.a"], libraries=["stdc++"])
 
 setup(
     name="pymcl",
