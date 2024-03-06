@@ -23,7 +23,7 @@ PyDoc_STRVAR(G1__doc__,
     "G1(s: str) -> G1\n"
     "G1.__str__(self: G1) -> str\n"
     "G1.__add__(self: G1, other: G1) -> G1\n"
-    "G1.__aub__(self: G1, other: G1) -> G1\n"
+    "G1.__sub__(self: G1, other: G1) -> G1\n"
     "G1.__neg__(self: G1) -> G1\n"
     "G1.__mul__(self: G1, other: Fr) -> G1\n"
     "G1.__eq__(self: G1, other: G1) -> bool\n"
@@ -32,6 +32,7 @@ PyDoc_STRVAR(G1__doc__,
     "G1.serialize(self: G1) -> bytes\n"
     "G1.deserialize(b: bytes) -> G1\n"
     "G1.hash(b: bytes) -> G1\n"
+    "G1.isZero(self: G1) -> bool\n"
     "\n"
     "Most of the basic arithmetic operations apply. Please note that many of them\n"
     "do not make sense between groups, and that not all of these are checked for.");
@@ -337,6 +338,7 @@ PyDoc_STRVAR(G2__doc__,
     "G2.serialize(self: G2) -> bytes\n"
     "G2.deserialize(b: bytes) -> G2\n"
     "G2.hash(b: bytes) -> G2\n"
+    "G2.isZero(self: G2) -> bool\n"
     "\n"
     "Most of the basic arithmetic operations apply. Please note that many of them\n"
     "do not make sense between groups, and that not all of these are checked for.");
@@ -641,6 +643,8 @@ PyDoc_STRVAR(GT__doc__,
     "GT.__hash__(self: GT) -> int\n"
     "GT.serialize(self: GT) -> bytes\n"
     "GT.deserialize(b: bytes) -> GT\n"
+    "GT.isZero(self: GT) -> bool\n"
+    "GT.isOne(self: GT) -> bool\n"
     "\n"
     "Most of the basic arithmetic operations apply. Please note that many of them\n"
     "do not make sense between groups, and that not all of these are checked for.");
@@ -943,6 +947,8 @@ PyDoc_STRVAR(Fr__doc__,
     "Fr.serialize(self: Fr) -> bytes\n"
     "Fr.deserialize(b: bytes) -> Fr\n"
     "Fr.random() -> Fr\n"
+    "Fr.isZero(self: Fr) -> bool\n"
+    "Fr.isOne(self: Fr) -> bool\n"
     "\n"
     "Most of the basic arithmetic operations apply. Please note that many of them\n"
     "do not make sense between groups, and that not all of these are checked for.");
