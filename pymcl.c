@@ -48,34 +48,30 @@ G1 *G1_create(void) {
     return g1_res;
 }
 
-PyObject *G1_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
-    // create the object
-    return (PyObject *)G1_create();
+PyObject *G1_new(PyTypeObject *cls, PyObject *args, PyObject *kwds) {
+    // required a string
+    char *string = NULL;
+    Py_ssize_t length;
+    if (!PyArg_ParseTuple(args, "|s#", &string, &length)) {
+        PyErr_SetString(PyExc_TypeError, "could not parse arguments, should be a string");
+        return NULL;
+    }
+    // build the result
+    G1 *g1_res = G1_create();
+    // initialize the G1 with the string
+    if (string == NULL) {
+        mclBnG1_clear(&g1_res->mcl_g1);
+    } else if (mclBnG1_setStr(&g1_res->mcl_g1, string, length, 10)) {
+        PyErr_SetString(PyExc_ValueError, "could not parse the string as a G1 element");
+        return NULL;
+    }
+    // return the element
+    return (PyObject *)g1_res;
 }
 
 void G1_dealloc(PyObject *self) {
     // free the object
     Py_TYPE(self)->tp_free(self);
-}
-
-int G1_init(PyObject *self, PyObject *args, PyObject *kwds) {
-    // convert the object to G1
-    G1 *g1_self = (G1 *)self;
-    // only argument is the parameter string
-    char *string = NULL;
-    Py_ssize_t length;
-    if (!PyArg_ParseTuple(args, "|s#", &string, &length)) {
-        PyErr_SetString(PyExc_TypeError, "argument must be a string");
-        return -1;
-    }
-    // initialize the G1 with the string
-    if (string == NULL) {
-        mclBnG1_clear(&g1_self->mcl_g1);
-    } else if (mclBnG1_setStr(&g1_self->mcl_g1, string, length, 10)) {
-        PyErr_SetString(PyExc_ValueError, "could not parse the string as a G1 element");
-        return -1;
-    }
-    return 0;
 }
 
 PyObject *G1_from_bytes(PyObject *type, PyObject *args) {
@@ -315,7 +311,7 @@ PyTypeObject G1Type = {
     0,                                        /* tp_descr_get */
     0,                                        /* tp_descr_set */
     0,                                        /* tp_dictoffset */
-    G1_init,                                  /* tp_init */
+    0,                                        /* tp_init */
     0,                                        /* tp_alloc */
     G1_new,                                   /* tp_new */
 };
@@ -358,33 +354,29 @@ G2 *G2_create(void) {
 }
 
 PyObject *G2_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
-    // create the object
-    return (PyObject *)G2_create();
+    // required a string
+    char *string = NULL;
+    Py_ssize_t length;
+    if (!PyArg_ParseTuple(args, "|s#", &string, &length)) {
+        PyErr_SetString(PyExc_TypeError, "could not parse arguments, should be a string");
+        return NULL;
+    }
+    // build the result
+    G2 *g2_res = G2_create();
+    // initialize the G2 with the string
+    if (string == NULL) {
+        mclBnG2_clear(&g2_res->mcl_g2);
+    } else if (mclBnG2_setStr(&g2_res->mcl_g2, string, length, 10)) {
+        PyErr_SetString(PyExc_ValueError, "could not parse the string as a G2 element");
+        return NULL;
+    }
+    // return the element
+    return (PyObject *)g2_res;
 }
 
 void G2_dealloc(PyObject *self) {
     // free the object
     Py_TYPE(self)->tp_free(self);
-}
-
-int G2_init(PyObject *self, PyObject *args, PyObject *kwds) {
-    // convert the object to G2
-    G2 *g2_self = (G2 *)self;
-    // only argument is the parameter string
-    char *string = NULL;
-    Py_ssize_t length;
-    if (!PyArg_ParseTuple(args, "|s#", &string, &length)) {
-        PyErr_SetString(PyExc_TypeError, "argument must be a string");
-        return -1;
-    }
-    // initialize the G2 with the string
-    if (string == NULL) {
-        mclBnG2_clear(&g2_self->mcl_g2);
-    } else if (mclBnG2_setStr(&g2_self->mcl_g2, string, length, 10)) {
-        PyErr_SetString(PyExc_ValueError, "could not parse the string as a G2 element");
-        return -1;
-    }
-    return 0;
 }
 
 PyObject *G2_from_bytes(PyObject *type, PyObject *args) {
@@ -624,7 +616,7 @@ PyTypeObject G2Type = {
     0,                                        /* tp_descr_get */
     0,                                        /* tp_descr_set */
     0,                                        /* tp_dictoffset */
-    G2_init,                                  /* tp_init */
+    0,                                        /* tp_init */
     0,                                        /* tp_alloc */
     G2_new,                                   /* tp_new */
 };
@@ -666,33 +658,29 @@ GT *GT_create(void) {
 }
 
 PyObject *GT_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
-    // create the object
-    return (PyObject *)GT_create();
+    // required a string
+    char *string = NULL;
+    Py_ssize_t length;
+    if (!PyArg_ParseTuple(args, "|s#", &string, &length)) {
+        PyErr_SetString(PyExc_TypeError, "could not parse arguments, should be a string");
+        return NULL;
+    }
+    // build the result
+    GT *gt_res = GT_create();
+    // initialize the GT with the string
+    if (string == NULL) {
+        mclBnGT_clear(&gt_res->mcl_gt);
+    } else if (mclBnGT_setStr(&gt_res->mcl_gt, string, length, 10)) {
+        PyErr_SetString(PyExc_ValueError, "could not parse the string as a GT element");
+        return NULL;
+    }
+    // return the element
+    return (PyObject *)gt_res;
 }
 
 void GT_dealloc(PyObject *self) {
     // free the object
     Py_TYPE(self)->tp_free(self);
-}
-
-int GT_init(PyObject *self, PyObject *args, PyObject *kwds) {
-    // convert the object to GT
-    GT *gt_self = (GT *)self;
-    // only argument is the parameter string
-    char *string = NULL;
-    Py_ssize_t length;
-    if (!PyArg_ParseTuple(args, "|s#", &string, &length)) {
-        PyErr_SetString(PyExc_TypeError, "argument must be a string");
-        return -1;
-    }
-    // initialize the GT with the string
-    if (string == NULL) {
-        mclBnGT_clear(&gt_self->mcl_gt);
-    } else if (mclBnGT_setStr(&gt_self->mcl_gt, string, length, 10)) {
-        PyErr_SetString(PyExc_ValueError, "could not parse the string as a GT element");
-        return -1;
-    }
-    return 0;
 }
 
 PyObject *GT_str(PyObject *self) {
@@ -926,7 +914,7 @@ PyTypeObject GTType = {
     0,                                        /* tp_descr_get */
     0,                                        /* tp_descr_set */
     0,                                        /* tp_dictoffset */
-    GT_init,                                  /* tp_init */
+    0,                                        /* tp_init */
     0,                                        /* tp_alloc */
     GT_new,                                   /* tp_new */
 };
@@ -972,33 +960,29 @@ Fr *Fr_create(void) {
 }
 
 PyObject *Fr_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
-    // create the object
-    return (PyObject *)Fr_create();
+    // required a string
+    char *string = NULL;
+    Py_ssize_t length;
+    if (!PyArg_ParseTuple(args, "|s#", &string, &length)) {
+        PyErr_SetString(PyExc_TypeError, "could not parse arguments, should be a string");
+        return NULL;
+    }
+    // build the result
+    Fr *fr_res = Fr_create();
+    // initialize the Fr with the string
+    if (string == NULL) {
+        mclBnFr_clear(&fr_res->mcl_fr);
+    } else if (mclBnFr_setStr(&fr_res->mcl_fr, string, length, 10)) {
+        PyErr_SetString(PyExc_ValueError, "could not parse the string as a Fr element");
+        return NULL;
+    }
+    // return the element
+    return (PyObject *)fr_res;
 }
 
 void Fr_dealloc(PyObject *self) {
     // free the object
     Py_TYPE(self)->tp_free(self);
-}
-
-int Fr_init(PyObject *self, PyObject *args, PyObject *kwds) {
-    // convert the object to Fr
-    Fr *fr_self = (Fr *)self;
-    // only argument is the parameter string
-    char *string = NULL;
-    Py_ssize_t length;
-    if (!PyArg_ParseTuple(args, "|s#", &string, &length)) {
-        PyErr_SetString(PyExc_TypeError, "argument must be a string");
-        return -1;
-    }
-    // initialize the Fr with the string
-    if (string == NULL) {
-        mclBnFr_clear(&fr_self->mcl_fr);
-    } else if (mclBnFr_setStr(&fr_self->mcl_fr, string, length, 10)) {
-        PyErr_SetString(PyExc_ValueError, "could not parse the string as a Fr element");
-        return -1;
-    }
-    return 0;
 }
 
 PyObject *Fr_str(PyObject *self) {
@@ -1266,7 +1250,7 @@ PyTypeObject FrType = {
     0,                                        /* tp_descr_get */
     0,                                        /* tp_descr_set */
     0,                                        /* tp_dictoffset */
-    Fr_init,                                  /* tp_init */
+    0,                                        /* tp_init */
     0,                                        /* tp_alloc */
     Fr_new,                                   /* tp_new */
 };
@@ -1350,15 +1334,15 @@ PyMODINIT_FUNC PyInit_pymcl(void) {
     // initialize the constants
     const char *rStr = "0x73eda753299d7d483339d80809a1d80553bda402fffe5bfeffffffff00000001";
     PyObject *r = PyLong_FromString(rStr, NULL, 0);
-    G1* P = G1_create();
+    G1* g1 = G1_create();
     const char *g1Str = "1 0x17f1d3a73197d7942695638c4fa9ac0fc3688c4f9774b905a14e3a3f171bac586c55e83ff97a1aeffb3af00adb22c6bb 0x08b3f481e3aaa0f1a09e30ed741d8ae4fcf5e095d5d00af600db18cb2c04b3edd03cc744a2888ae40caa232946c5e7e1";
-    mclBnG1_setStr(&P->mcl_g1, g1Str, strlen(g1Str), 16);
-    G2* Q = G2_create();
+    mclBnG1_setStr(&g1->mcl_g1, g1Str, strlen(g1Str), 16);
+    G2* g2 = G2_create();
     const char *g2Str = "1 0x24aa2b2f08f0a91260805272dc51051c6e47ad4fa403b02b4510b647ae3d1770bac0326a805bbefd48056c8c121bdb8 0x13e02b6052719f607dacd3a088274f65596bd0d09920b61ab5da61bbdc7f5049334cf11213945d57e5ac7d055d042b7e 0x0ce5d527727d6e118cc9cdc6da2e351aadfd9baa8cbdd3a76d429a695160d12c923ac9cc3baca289e193548608b82801 0x0606c4a02ea734cc32acd2b02bc28b99cb3e287e85a763af267492ab572e99ab3f370d275cec1da1aaa9075ff05f79be";
-    mclBnG2_setStr(&Q->mcl_g2, g2Str, strlen(g2Str), 16);
+    mclBnG2_setStr(&g2->mcl_g2, g2Str, strlen(g2Str), 16);
     // add the constants to the module, no need to increment the reference count
     PyModule_AddObject(module, "r", r);
-    PyModule_AddObject(module, "P", (PyObject *)P);
-    PyModule_AddObject(module, "Q", (PyObject *)Q);
+    PyModule_AddObject(module, "g1", (PyObject *)g1);
+    PyModule_AddObject(module, "g2", (PyObject *)g2);
     return module;
 }

@@ -27,7 +27,6 @@ typedef struct {
 
 G1 *G1_create();
 PyObject *G1_new(PyTypeObject *type, PyObject *args, PyObject *kwds);
-int G1_init(PyObject *self, PyObject *args, PyObject *kwds);
 void G1_dealloc(PyObject *self);
 
 PyMemberDef G1_members[];
@@ -42,7 +41,6 @@ typedef struct {
 
 G2 *G2_create();
 PyObject *G2_new(PyTypeObject *type, PyObject *args, PyObject *kwds);
-int G2_init(PyObject *self, PyObject *args, PyObject *kwds);
 void G2_dealloc(PyObject *self);
 
 PyMemberDef G2_members[];
@@ -57,7 +55,6 @@ typedef struct {
 
 GT *GT_create();
 PyObject *GT_new(PyTypeObject *type, PyObject *args, PyObject *kwds);
-int GT_init(PyObject *self, PyObject *args, PyObject *kwds);
 void GT_dealloc(PyObject *self);
 
 PyMemberDef GT_members[];
@@ -72,7 +69,6 @@ typedef struct {
 
 Fr *Fr_create();
 PyObject *Fr_new(PyTypeObject *type, PyObject *args, PyObject *kwds);
-int Fr_init(PyObject *self, PyObject *args, PyObject *kwds);
 void Fr_dealloc(PyObject *self);
 
 PyMemberDef Fr_members[];
