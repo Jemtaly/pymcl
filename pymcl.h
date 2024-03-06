@@ -15,7 +15,7 @@
 * Licensed under GPLv3                                                         *
 * Released 5 March 2024                                                        *
 *                                                                              *
-* This file contains the types and functions needed to use MCL from Python3.   *
+* This file contains the types and functions needed to use MCL from Python 3.  *
 *******************************************************************************/
 
 // We're going to need a few types

@@ -8,7 +8,7 @@
 * Licensed under GPLv3                                                         *
 * Released 5 March 2024                                                        *
 *                                                                              *
-* This file contains the types and functions needed to use mcl from Python3.   *
+* This file contains the types and functions needed to use mcl from Python 3.  *
 *******************************************************************************/
 
 /*******************************************************************************
@@ -1266,12 +1266,12 @@ PyTypeObject FrType = {
 *******************************************************************************/
 
 PyDoc_STRVAR(pymcl__doc__,
-    "A Python3 wrapper for the mcl library.\n"
+    "A Python 3 wrapper for the mcl library.\n"
     "\n"
-    "This library provides a Python3 interface to the mcl library, which is a\n"
+    "This library provides a Python 3 interface to the mcl library, which is a\n"
     "C++ library for pairing-based cryptography. It provides a Pythonic interface\n"
     "to the mcl library, allowing for the use of bilinear groups and pairings in\n"
-    "Python3.");
+    "Python 3.");
 
 PyObject *pairing(PyObject *self, PyObject *args) {
     // parse the arguments
