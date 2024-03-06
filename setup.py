@@ -11,7 +11,7 @@ else:
 setup(
     name="pymcl",
     version="1.0",
-    description="Python bindings for the MCL library",
+    description="Python bindings for the mcl library",
     author="Jemtaly",
     author_email="Jemtaly@outlook.com",
     url="https://www.github.com/Jemtaly/pymcl",
