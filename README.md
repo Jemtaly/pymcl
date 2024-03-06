@@ -39,7 +39,7 @@ There are 4 types of elements in pymcl: `Fr`, `G1`, `G2`, and `GT`. You can perf
 ```python
 Fr(s: str) -> Fr
 ```
-Create an element in Fr from a string, which is the decimal representation of the element. The library does not supply a constructor for `Fr` from an integer, you can convert an integer to a string and then use this constructor.
+Create an element in Fr from a string, which is the decimal representation of the element. The library does not supply a constructor for `Fr` from an integer, you can convert an integer to a string and then use this constructor, the integer should be in the range of $[0, r)$, where $r$ is the order of the Fr group.
 
 ```python
 Fr.__str__(self: Fr) -> str
