@@ -1,6 +1,6 @@
 # pymcl
 
-A Python3 wrapper for the [MCL](https://github.com/herumi/mcl) library. Currently support operations on BLS12-381 curve.
+A Python3 wrapper for the [mcl](https://github.com/herumi/mcl) library. Currently support operations on BLS12-381 curve.
 
 ## Installation
 
