@@ -1,2 +1,185 @@
 # pymcl
-Python bindings for the MCL library
+
+A Python3 wrapper for the [MCL](https://github.com/herumi/mcl) library. Currently support operations on BLS12-381 curve.
+
+## Installation
+
+**For Debian-based systems, install the package using the provided `install.sh` script.**
+
+For other platforms, to use pymcl, you need to install the mcl library first, follow the instructions [here](https://github.com/herumi/mcl/blob/master/readme.md).
+
+After installing the mcl library, you can install pymcl using pip in current directory:
+
+```bash
+pip install .
+```
+
+## Basic Usage
+
+Here is an example of how to use pymcl:
+
+```python
+import pymcl
+
+g1 = pymcl.g1 # generator of G1
+g2 = pymcl.g2 # generator of G2
+x1 = pymcl.Fr.random() # random element in Fr
+x2 = pymcl.Fr.random() # random element in Fr
+
+# check the correctness of the pairing
+assert pymcl.pairing(g1 * x1, g2 * x2) == pymcl.pairing(g1, g2) ** (x1 * x2)
+```
+
+## Other Operations
+
+There are 4 types of elements in pymcl: `Fr`, `G1`, `G2`, and `GT`. You can perform operations on these elements as follows:
+
+### `Fr` Class
+
+```python
+Fr(s: str) -> Fr
+```
+Create an element in Fr from a string, which is the decimal representation of the element. The library does not supply a constructor for `Fr` from an integer, you can convert an integer to a string and then use this constructor.
+
+```python
+Fr.__str__(self: Fr) -> str
+```
+Convert the element to a string.
+
+```python
+Fr.random() -> Fr
+```
+Return a random element in Fr.
+
+```python
+Fr.__add__(self: Fr, other: Fr) -> Fr
+Fr.__sub__(self: Fr, other: Fr) -> Fr
+Fr.__neg__(self: Fr) -> Fr
+Fr.__mul__(self: Fr, other: Fr) -> Fr
+Fr.__truediv__(self: Fr, other: Fr) -> Fr
+Fr.__invert__(self: Fr) -> Fr
+```
+Perform addition, subtraction, negation, multiplication, division, and inversion on the element.
+
+```python
+Fr.__eq__(self: Fr, other: Fr) -> bool
+Fr.__ne__(self: Fr, other: Fr) -> bool
+Fr.isZero(self: Fr) -> bool
+Fr.isOne(self: Fr) -> bool
+```
+Check the equality and inequality of the element, and check if the element is the additive identity or the multiplicative identity.
+
+```python
+Fr.__hash__(self: Fr) -> int
+```
+Return the hash value of the element.
+
+```python
+Fr.serialize(self: Fr) -> bytes
+Fr.deserialize(b: bytes) -> Fr
+```
+Serialize and deserialize the element.
+
+### `G1` Class
+
+```python
+G1(s: str) -> G1
+```
+Create an element in G1 from theits string representation.
+
+```python
+G1.__str__(self: G1) -> str
+```
+Convert the element to a string (check [the API of mcl](https://github.com/herumi/mcl/blob/master/api.md#string-conversion)) for the format of the string representation.
+
+```python
+G1.hash(b: bytes) -> G1
+```
+Hash a byte array to an element in G1. (check [here](https://github.com/herumi/mcl/blob/master/api.md#hash-to-curve-function)).
+
+```python
+G1.__add__(self: G1, other: G1) -> G1
+G1.__sub__(self: G1, other: G1) -> G1
+G1.__neg__(self: G1) -> G1
+G1.__mul__(self: G1, other: Fr) -> G1
+```
+Perform addition, subtraction, negation, and multiplication on the element. Note that for the multiplication of G1 and Fr, the Fr element should be on the right-hand side.
+
+```python
+G1.__eq__(self: G1, other: G1) -> bool
+G1.__ne__(self: G1, other: G1) -> bool
+G1.isZero(self: G1) -> bool
+```
+Check the equality and inequality of the element, and check if the element is the additive identity.
+
+```python
+G1.__hash__(self: G1) -> int
+```
+Return the hash value of the element.
+
+```python
+G1.serialize(self: G1) -> bytes
+G1.deserialize(b: bytes) -> G1
+```
+Serialize and deserialize the element (in compressed form).
+
+### `G2` Class
+
+The `G2` class has the same methods as the [`G1`](#g1-class) class.
+
+### `GT` Class
+
+```python
+GT(s: str) -> GT
+```
+Create an element in GT from its string representation.
+
+```python
+GT.__str__(self: GT) -> str
+```
+Convert the element to a string.
+
+```python
+GT.__mul__(self: GT, other: GT) -> GT
+GT.__truediv__(self: GT, other: GT) -> GT
+GT.__invert__(self: GT) -> GT
+GT.__pow__(self: GT, other: Fr) -> GT
+```
+Perform multiplication, division, inversion, and exponentiation on the element.
+
+```python
+GT.__eq__(self: GT, other: GT) -> bool
+GT.__ne__(self: GT, other: GT) -> bool
+GT.isZero(self: GT) -> bool
+GT.isOne(self: GT) -> bool
+```
+Check the equality and inequality of the element, and check if the element is the additive identity or the multiplicative identity.
+
+```python
+GT.__hash__(self: GT) -> int
+```
+Return the hash value of the element.
+
+```python
+GT.serialize(self: GT) -> bytes
+GT.deserialize(b: bytes) -> GT
+```
+Serialize and deserialize the element.
+
+### Other Function and Constants
+
+```python
+pairing(a: G1, b: G2) -> GT
+```
+Compute the pairing of two elements in G1 and G2, note that the first argument should be in G1 and the second argument should be in G2.
+
+```python
+g1: G1
+g2: G2
+```
+The generator of G1 and G2.
+
+```python
+r: int
+```
+The order of the G1, G2, Fr, and GT groups.
