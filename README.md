@@ -6,9 +6,9 @@ A Python 3 wrapper for the [mcl](https://github.com/herumi/mcl) library. Current
 
 **For Debian-based systems, install the package using the provided `install.sh` script.**
 
-For other platforms, to use pymcl, you need to install the mcl library first, follow the instructions [here](https://github.com/herumi/mcl/blob/master/readme.md).
+For other platforms, to use pymcl, you need to build the mcl library from source first, follow the instructions [here](https://github.com/herumi/mcl/blob/master/readme.md).
 
-After installing the mcl library, you can install pymcl using pip in current directory:
+After building the mcl library, make sure you place the whole `mcl` library directory (which contains `lib` and `include` folders) in current directory, then, you can install the package using the following command:
 
 ```bash
 pip install .
