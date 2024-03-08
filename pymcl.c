@@ -11,6 +11,22 @@
 * This file contains the types and functions needed to use mcl from Python 3.  *
 *******************************************************************************/
 
+Py_hash_t hash_bytes(const char *string, Py_ssize_t size) {
+    // initialize the hash
+    Py_uhash_t hash = 14695981039346656037U;
+    // iterate over the string
+    for (Py_ssize_t i = 0; i < size; i++) {
+        hash ^= (Py_uhash_t)string[i];
+        hash *= 1099511628211U;
+    }
+    // check if the hash is invalid
+    if (hash == (Py_uhash_t)-1) {
+        hash = (Py_uhash_t)-2;
+    }
+    // return the hash
+    return (Py_hash_t)hash;
+}
+
 /*******************************************************************************
 *                                      G1                                      *
 *******************************************************************************/
@@ -121,7 +137,7 @@ Py_hash_t G1_hash(PyObject *self) {
     // convert the G1 to bytes
     Py_ssize_t size = mclBnG1_serialize(buffer, sizeof(buffer), &g1_self->mcl_g1);
     // return the hash
-    return _Py_HashBytes((const unsigned char *)buffer, size);
+    return hash_bytes(buffer, size);
 }
 
 PyObject *G1_deserialize(PyObject *type, PyObject *args) {
@@ -427,7 +443,7 @@ Py_hash_t G2_hash(PyObject *self) {
     // convert the G2 to bytes
     Py_ssize_t size = mclBnG2_serialize(buffer, sizeof(buffer), &g2_self->mcl_g2);
     // return the hash
-    return _Py_HashBytes((const unsigned char *)buffer, size);
+    return hash_bytes(buffer, size);
 }
 
 PyObject *G2_deserialize(PyObject *type, PyObject *args) {
@@ -716,7 +732,7 @@ Py_hash_t GT_hash(PyObject *self) {
     // convert the GT to bytes
     Py_ssize_t size = mclBnGT_serialize(buffer, sizeof(buffer), &gt_self->mcl_gt);
     // return the hash
-    return _Py_HashBytes((const unsigned char *)buffer, size);
+    return hash_bytes(buffer, size);
 }
 
 PyObject *GT_deserialize(PyObject *type, PyObject *args) {
@@ -1020,7 +1036,7 @@ Py_hash_t Fr_hash(PyObject *self) {
     // convert the Fr to bytes
     Py_ssize_t size = mclBnFr_serialize(buffer, sizeof(buffer), &fr_self->mcl_fr);
     // return the hash
-    return _Py_HashBytes((const unsigned char *)buffer, size);
+    return hash_bytes(buffer, size);
 }
 
 PyObject *Fr_deserialize(PyObject *type, PyObject *args) {
