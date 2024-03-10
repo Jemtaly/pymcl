@@ -85,7 +85,7 @@ Serialize and deserialize the element.
 ```python
 G1(s: str) -> G1
 ```
-Create an element in G1 from theits string representation.
+Create an element in G1 from its string representation.
 
 ```python
 G1.__str__(self: G1) -> str
