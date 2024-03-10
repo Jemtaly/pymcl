@@ -90,12 +90,12 @@ Create an element in G1 from its string representation.
 ```python
 G1.__str__(self: G1) -> str
 ```
-Convert the element to a string (check [the API of mcl](https://github.com/herumi/mcl/blob/master/api.md#string-conversion)) for the format of the string representation.
+Convert the element to a string. (check [the API of mcl](https://github.com/herumi/mcl/blob/master/api.md#string-conversion) for the format of the string representation)
 
 ```python
 G1.hash(b: bytes) -> G1
 ```
-Hash a byte array to an element in G1. (check [here](https://github.com/herumi/mcl/blob/master/api.md#hash-to-curve-function)).
+Hash a byte array to an element in G1. (check [here](https://github.com/herumi/mcl/blob/master/api.md#hash-to-curve-function))
 
 ```python
 G1.__add__(self: G1, other: G1) -> G1
