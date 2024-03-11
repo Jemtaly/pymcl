@@ -4,7 +4,16 @@ A Python 3 wrapper for the [mcl](https://github.com/herumi/mcl) library. Current
 
 ## Installation
 
-**For Debian-based systems, install the package using the provided `install.sh` script.**
+First, clone this repository using following command:
+
+```sh
+git clone https://github.com/Jemtaly/pymcl
+cd pymcl
+```
+
+Then install the library:
+
+**For Debian-based systems (Debian, Ubuntu, Kali, etc.), you can simply install the library using the provided `install.sh` script.**
 
 For other platforms, to use pymcl, you need to build the mcl library from source first, follow the instructions [here](https://github.com/herumi/mcl/blob/master/readme.md).
 
