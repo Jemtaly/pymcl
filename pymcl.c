@@ -199,20 +199,28 @@ PyObject *G1_neg(PyObject *arg) {
     return (PyObject *)g1_res;
 }
 
-PyObject *G1_mul(PyObject *lft, PyObject *rgt, PyObject *mod) {
-    // check the type of arguments
-    if (!PyObject_TypeCheck(lft, &G1Type) || !PyObject_TypeCheck(rgt, &FrType)) {
+PyObject *G1_mul(PyObject *self, PyObject *other) {
+    // Check the types of the arguments
+    if (!PyObject_TypeCheck(self, &G1Type) || !PyObject_TypeCheck(other, &FrType)) {
         PyErr_SetString(PyExc_TypeError, "operands must be a G1 element and an Fr element");
         return NULL;
     }
-    // convert the objects to G1 and Element
-    G1 *g1_lft = (G1 *)lft;
-    Fr *fr_rgt = (Fr *)rgt;
-    // build the result element and initialize it to the same group as the left element
+
+    // Convert the objects to G1 and Fr
+    G1 *g1_lft = (G1 *)self;
+    Fr *fr_rgt = (Fr *)other;
+
+    // Build the result element and initialize it
     G1 *g1_res = G1_create();
+    if (!g1_res) {
+        PyErr_SetString(PyExc_RuntimeError, "failed to create G1 object");
+        return NULL;
+    }
+
     mclBnG1_mul(&g1_res->mcl_g1, &g1_lft->mcl_g1, &fr_rgt->mcl_fr);
     return (PyObject *)g1_res;
 }
+
 
 PyObject *G1_cmp(PyObject *lft, PyObject *rgt, int op) {
     // check the type of arguments
@@ -505,20 +513,28 @@ PyObject *G2_neg(PyObject *arg) {
     return (PyObject *)g2_res;
 }
 
-PyObject *G2_mul(PyObject *lft, PyObject *rgt, PyObject *mod) {
-    // check the type of arguments
-    if (!PyObject_TypeCheck(lft, &G2Type) || !PyObject_TypeCheck(rgt, &FrType)) {
+PyObject *G2_mul(PyObject *self, PyObject *other) {
+    // Check the types of the arguments
+    if (!PyObject_TypeCheck(self, &G2Type) || !PyObject_TypeCheck(other, &FrType)) {
         PyErr_SetString(PyExc_TypeError, "operands must be a G2 element and an Fr element");
         return NULL;
     }
-    // convert the objects to G2 and Element
-    G2 *g2_lft = (G2 *)lft;
-    Fr *fr_rgt = (Fr *)rgt;
-    // build the result element and initialize it to the same group as the left element
+
+    // Convert the objects to G2 and Fr
+    G2 *g2_lft = (G2 *)self;
+    Fr *fr_rgt = (Fr *)other;
+
+    // Build the result element and initialize it
     G2 *g2_res = G2_create();
+    if (!g2_res) {
+        PyErr_SetString(PyExc_RuntimeError, "failed to create G2 object");
+        return NULL;
+    }
+
     mclBnG2_mul(&g2_res->mcl_g2, &g2_lft->mcl_g2, &fr_rgt->mcl_fr);
     return (PyObject *)g2_res;
 }
+
 
 PyObject *G2_cmp(PyObject *lft, PyObject *rgt, int op) {
     // check the type of arguments
