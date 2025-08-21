@@ -17,10 +17,26 @@ Then install the library:
 
 For other platforms, to use pymcl, you need to build the mcl library from source first, follow the instructions [here](https://github.com/herumi/mcl/blob/master/readme.md).
 
-After building the mcl library, make sure you place the whole `mcl` library directory (which contains `lib` and `include` folders) in current directory, then, you can install the package using the following command:
+After building the mcl library, make sure you place the whole `mcl` library directory (which contains `lib` and `include` folders) in current directory, then, you can install the package using any of the following modern methods:
 
+### Using pip (recommended)
 ```bash
 pip install .
+```
+
+### Using modern Python build tools
+```bash
+# Build wheel and source distribution
+python -m pip install build
+python -m build
+
+# Install from built wheel
+pip install dist/*.whl
+```
+
+### Development installation
+```bash
+pip install -e .
 ```
 
 ## Basic Usage

@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pymcl"
+version = "1.0.0"
+description = "Python bindings for the mcl library"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Jemtaly", email = "Jemtaly@outlook.com"}
+]
+maintainers = [
+    {name = "Jemtaly", email = "Jemtaly@outlook.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: C",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security :: Cryptography",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["cryptography", "pairing", "bls12-381", "mcl", "elliptic-curves"]
+requires-python = ">=3.8"
+
+[project.urls]
+Homepage = "https://github.com/Jemtaly/pymcl"
+Repository = "https://github.com/Jemtaly/pymcl"
+Issues = "https://github.com/Jemtaly/pymcl/issues"
+
+[tool.setuptools]
+py-modules = []
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pymcl*"]
+exclude = ["tests*", "docs*"]

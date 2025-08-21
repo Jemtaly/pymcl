@@ -1,0 +1,39 @@
+# Build artifacts
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.dll
+
+# Virtual environments
+venv/
+env/
+.env
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# MCL library (built externally)
+mcl/
+
+# Testing
+.pytest_cache/
+.tox/
+.coverage
+htmlcov/
+
+# Distribution
+*.tar.gz
+*.whl
