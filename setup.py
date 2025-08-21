@@ -16,4 +16,7 @@ setup(
     author_email="Jemtaly@outlook.com",
     url="https://www.github.com/Jemtaly/pymcl",
     ext_modules=[pymcl_module],
+    package_data={"": ["*.pyi", "py.typed"]},
+    include_package_data=True,
+    zip_safe=False,
 )

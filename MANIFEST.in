@@ -1,0 +1,4 @@
+include *.pyi
+include py.typed
+include README.md
+include LICENSE

@@ -192,3 +192,47 @@ The generator of G1 and G2.
 r: int
 ```
 The order of the G1, G2, Fr, and GT groups.
+
+## Type Hints and IDE Support
+
+pymcl now includes comprehensive type hints to support:
+
+- **IDE Autocompletion**: Get method suggestions when typing `pymcl.Fr.`, `g1_element.`, etc.
+- **Type Checking**: Use mypy or other type checkers to catch errors at development time
+- **Better Documentation**: IDEs show parameter types and return types for all methods
+
+### Example with Type Hints
+
+```python
+import pymcl
+
+# IDE will autocomplete these and show proper types
+fr: pymcl.Fr = pymcl.Fr("123")
+random_fr: pymcl.Fr = pymcl.Fr.random()
+fr_sum: pymcl.Fr = fr + random_fr  # Autocompletion shows this returns Fr
+
+g1_point: pymcl.G1 = pymcl.G1()
+g1_scalar: pymcl.G1 = g1_point * fr  # IDE knows this is scalar multiplication
+
+# Type checker will catch errors like:
+# wrong = g1_point + pymcl.g2  # Error: Can't add G1 and G2!
+# wrong = pymcl.pairing(g2, g1)  # Error: Wrong parameter order!
+```
+
+### Supported IDEs
+
+The type hints work with any Python IDE that supports PEP 484 type hints:
+- Visual Studio Code with Python extension
+- PyCharm
+- Vim/Neovim with Python language server
+- Emacs with python-mode
+- Any editor with Language Server Protocol (LSP) support
+
+### Type Checking
+
+You can use mypy to check your code for type errors:
+
+```bash
+pip install mypy
+mypy your_pymcl_code.py
+```
