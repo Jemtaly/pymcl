@@ -23,6 +23,49 @@ After building the mcl library, make sure you place the whole `mcl` library dire
 pip install .
 ```
 
+## Testing
+
+The library includes a comprehensive test suite to ensure all functionality works correctly.
+
+### Running Tests Locally
+
+1. **Install test dependencies:**
+   ```bash
+   pip install -r requirements-dev.txt
+   ```
+
+2. **Run the full test suite:**
+   ```bash
+   pytest tests/
+   ```
+
+3. **Run tests with coverage:**
+   ```bash
+   pytest tests/ --cov=pymcl --cov-report=html
+   ```
+
+4. **Use the convenient test runner script:**
+   ```bash
+   python run_tests.py
+   ```
+
+### Testing with Multiple Python Versions
+
+If you have `tox` installed, you can test across multiple Python versions:
+
+```bash
+pip install tox
+tox
+```
+
+### Continuous Integration
+
+The repository includes GitHub Actions workflows that automatically test the library on:
+- Multiple Python versions (3.8, 3.9, 3.10, 3.11, 3.12)
+- Multiple operating systems (Ubuntu, macOS, Windows)
+
+Tests are run on every push and pull request to ensure code quality and compatibility.
+
 ## Basic Usage
 
 Here is an example of how to use pymcl:
