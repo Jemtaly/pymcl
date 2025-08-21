@@ -13,8 +13,8 @@ class TestFr:
     
     def test_fr_creation(self):
         """Test creation of Fr elements."""
-        # Create from integer
-        fr1 = pymcl.Fr(42)
+        # Create from string
+        fr1 = pymcl.Fr("42")
         assert str(fr1) == "42"
         
         # Create from string
@@ -27,8 +27,8 @@ class TestFr:
     
     def test_fr_arithmetic(self):
         """Test Fr arithmetic operations."""
-        fr1 = pymcl.Fr(10)
-        fr2 = pymcl.Fr(5)
+        fr1 = pymcl.Fr("10")
+        fr2 = pymcl.Fr("5")
         
         # Addition
         result = fr1 + fr2
@@ -56,9 +56,9 @@ class TestFr:
     
     def test_fr_comparison(self):
         """Test Fr comparison operations."""
-        fr1 = pymcl.Fr(42)
-        fr2 = pymcl.Fr(42)
-        fr3 = pymcl.Fr(24)
+        fr1 = pymcl.Fr("42")
+        fr2 = pymcl.Fr("42")
+        fr3 = pymcl.Fr("24")
         
         assert fr1 == fr2
         assert fr1 != fr3
@@ -67,9 +67,9 @@ class TestFr:
     
     def test_fr_identity_elements(self):
         """Test Fr identity elements."""
-        fr_zero = pymcl.Fr(0)
-        fr_one = pymcl.Fr(1)
-        fr_other = pymcl.Fr(42)
+        fr_zero = pymcl.Fr("0")
+        fr_one = pymcl.Fr("1")
+        fr_other = pymcl.Fr("42")
         
         assert fr_zero.isZero()
         assert not fr_one.isZero()
@@ -81,7 +81,7 @@ class TestFr:
     
     def test_fr_serialization(self):
         """Test Fr serialization and deserialization."""
-        fr_orig = pymcl.Fr(12345)
+        fr_orig = pymcl.Fr("12345")
         
         # Serialize
         serialized = fr_orig.serialize()
@@ -93,9 +93,9 @@ class TestFr:
     
     def test_fr_hash(self):
         """Test Fr hash functionality."""
-        fr1 = pymcl.Fr(42)
-        fr2 = pymcl.Fr(42)
-        fr3 = pymcl.Fr(24)
+        fr1 = pymcl.Fr("42")
+        fr2 = pymcl.Fr("42")
+        fr3 = pymcl.Fr("24")
         
         # Equal elements should have same hash
         assert hash(fr1) == hash(fr2)
@@ -122,8 +122,8 @@ class TestG1:
     def test_g1_arithmetic(self):
         """Test G1 arithmetic operations."""
         g1 = pymcl.g1
-        fr1 = pymcl.Fr(10)
-        fr2 = pymcl.Fr(5)
+        fr1 = pymcl.Fr("10")
+        fr2 = pymcl.Fr("5")
         
         # Scalar multiplication
         result = g1 * fr1
@@ -146,14 +146,14 @@ class TestG1:
         """Test G1 comparison operations."""
         g1 = pymcl.g1
         g1_copy = pymcl.G1(str(g1))
-        g1_diff = g1 * pymcl.Fr(2)
+        g1_diff = g1 * pymcl.Fr("2")
         
         assert g1 == g1_copy
         assert g1 != g1_diff
     
     def test_g1_identity_elements(self):
         """Test G1 identity elements."""
-        g1_zero = pymcl.g1 * pymcl.Fr(0)  # Should be zero element
+        g1_zero = pymcl.g1 * pymcl.Fr("0")  # Should be zero element
         g1_nonzero = pymcl.g1
         
         assert g1_zero.isZero()
@@ -161,7 +161,7 @@ class TestG1:
     
     def test_g1_serialization(self):
         """Test G1 serialization and deserialization."""
-        g1_orig = pymcl.g1 * pymcl.Fr(42)
+        g1_orig = pymcl.g1 * pymcl.Fr("42")
         
         # Serialize
         serialized = g1_orig.serialize()
@@ -189,8 +189,8 @@ class TestG2:
     def test_g2_arithmetic(self):
         """Test G2 arithmetic operations."""
         g2 = pymcl.g2
-        fr1 = pymcl.Fr(10)
-        fr2 = pymcl.Fr(5)
+        fr1 = pymcl.Fr("10")
+        fr2 = pymcl.Fr("5")
         
         # Scalar multiplication
         result = g2 * fr1
@@ -213,14 +213,14 @@ class TestG2:
         """Test G2 comparison operations."""
         g2 = pymcl.g2
         g2_copy = pymcl.G2(str(g2))
-        g2_diff = g2 * pymcl.Fr(2)
+        g2_diff = g2 * pymcl.Fr("2")
         
         assert g2 == g2_copy
         assert g2 != g2_diff
     
     def test_g2_identity_elements(self):
         """Test G2 identity elements."""
-        g2_zero = pymcl.g2 * pymcl.Fr(0)  # Should be zero element
+        g2_zero = pymcl.g2 * pymcl.Fr("0")  # Should be zero element
         g2_nonzero = pymcl.g2
         
         assert g2_zero.isZero()
@@ -228,7 +228,7 @@ class TestG2:
     
     def test_g2_serialization(self):
         """Test G2 serialization and deserialization."""
-        g2_orig = pymcl.g2 * pymcl.Fr(42)
+        g2_orig = pymcl.g2 * pymcl.Fr("42")
         
         # Serialize
         serialized = g2_orig.serialize()
@@ -260,8 +260,8 @@ class TestGT:
         g1 = pymcl.g1
         g2 = pymcl.g2
         gt1 = pymcl.pairing(g1, g2)
-        gt2 = pymcl.pairing(g1 * pymcl.Fr(2), g2)
-        fr = pymcl.Fr(3)
+        gt2 = pymcl.pairing(g1 * pymcl.Fr("2"), g2)
+        fr = pymcl.Fr("3")
         
         # Multiplication
         result = gt1 * gt2
@@ -285,14 +285,14 @@ class TestGT:
         g2 = pymcl.g2
         gt1 = pymcl.pairing(g1, g2)
         gt2 = pymcl.pairing(g1, g2)
-        gt3 = pymcl.pairing(g1 * pymcl.Fr(2), g2)
+        gt3 = pymcl.pairing(g1 * pymcl.Fr("2"), g2)
         
         assert gt1 == gt2
         assert gt1 != gt3
     
     def test_gt_identity_elements(self):
         """Test GT identity elements."""
-        g1_zero = pymcl.g1 * pymcl.Fr(0)
+        g1_zero = pymcl.g1 * pymcl.Fr("0")
         g2 = pymcl.g2
         gt_one = pymcl.pairing(g1_zero, g2)  # Should give identity in GT
         
@@ -303,8 +303,8 @@ class TestGT:
     
     def test_gt_serialization(self):
         """Test GT serialization and deserialization."""
-        g1 = pymcl.g1 * pymcl.Fr(42)
-        g2 = pymcl.g2 * pymcl.Fr(24)
+        g1 = pymcl.g1 * pymcl.Fr("42")
+        g2 = pymcl.g2 * pymcl.Fr("24")
         gt_orig = pymcl.pairing(g1, g2)
         
         # Serialize

@@ -12,16 +12,50 @@ def test_import():
     try:
         import pymcl
         print("✓ pymcl import successful")
-        return True
     except ImportError as e:
         print(f"✗ pymcl import failed: {e}")
-        return False
+        assert False, f"Failed to import pymcl: {e}"
 
 def test_basic_functionality():
     """Test basic functionality if import succeeded."""
+    import pymcl
+    
+    # Test that main classes exist
+    assert hasattr(pymcl, 'Fr'), "Fr class not found"
+    assert hasattr(pymcl, 'G1'), "G1 class not found" 
+    assert hasattr(pymcl, 'G2'), "G2 class not found"
+    assert hasattr(pymcl, 'GT'), "GT class not found"
+    print("✓ All required classes are available")
+    
+    # Test that constants exist
+    assert hasattr(pymcl, 'g1'), "g1 generator not found"
+    assert hasattr(pymcl, 'g2'), "g2 generator not found"
+    assert hasattr(pymcl, 'r'), "r constant not found"
+    print("✓ All required constants are available")
+    
+    # Test that pairing function exists
+    assert hasattr(pymcl, 'pairing'), "pairing function not found"
+    print("✓ Pairing function is available")
+
+def main():
+    """Run basic smoke tests."""
+    print("Running pymcl smoke tests...")
+    
+    # Test import
     try:
         import pymcl
-        
+        print("✓ pymcl import successful")
+    except ImportError as e:
+        print(f"✗ pymcl import failed: {e}")
+        print("\nSMOKE TEST FAILED: Cannot import pymcl")
+        print("This is expected if the mcl library hasn't been built yet.")
+        print("To build and test:")
+        print("1. Run: ./install.sh (on Linux/macOS) or install.bat (on Windows)")
+        print("2. Then run: python run_tests.py")
+        return 1
+    
+    # Test basic functionality
+    try:
         # Test that main classes exist
         assert hasattr(pymcl, 'Fr'), "Fr class not found"
         assert hasattr(pymcl, 'G1'), "G1 class not found" 
@@ -38,26 +72,8 @@ def test_basic_functionality():
         # Test that pairing function exists
         assert hasattr(pymcl, 'pairing'), "pairing function not found"
         print("✓ Pairing function is available")
-        
-        return True
     except Exception as e:
         print(f"✗ Basic functionality test failed: {e}")
-        return False
-
-def main():
-    """Run basic smoke tests."""
-    print("Running pymcl smoke tests...")
-    
-    if not test_import():
-        print("\nSMOKE TEST FAILED: Cannot import pymcl")
-        print("This is expected if the mcl library hasn't been built yet.")
-        print("To build and test:")
-        print("1. Run: ./install.sh (on Linux/macOS) or install.bat (on Windows)")
-        print("2. Then run: python run_tests.py")
-        return 1
-    
-    if not test_basic_functionality():
-        print("\nSMOKE TEST FAILED: Basic functionality not working")
         return 1
     
     print("\n✓ All smoke tests passed!")

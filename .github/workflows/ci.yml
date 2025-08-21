@@ -38,6 +38,13 @@ jobs:
         git clone https://github.com/herumi/mcl
         cd mcl
         make -j$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)
+        # Build the specific BN library that pymcl needs
+        g++ -c src/bn_c384_256.cpp -o obj/bn_c384_256.o \
+          -g3 -Wall -Wextra -Wformat=2 -Wcast-qual -Wcast-align -Wwrite-strings \
+          -Wfloat-equal -Wpointer-arith -Wundef -m64 -I include -I test \
+          -fomit-frame-pointer -DNDEBUG -fno-stack-protector -O3 -fpic \
+          -DMCL_FP_BIT=384 -DMCL_FR_BIT=256 -DMCL_USE_LLVM=1 -DMCL_BINT_ASM=1 -DMCL_MSM=1
+        ar rv lib/libmclbn384_256.a obj/bn_c384_256.o
         cd ..
     
     - name: Install Python dependencies
@@ -79,6 +86,9 @@ jobs:
         git clone https://github.com/herumi/mcl
         cd mcl
         call mklib.bat
+        REM Build the specific BN library that pymcl needs
+        cl /c src/bn_c384_256.cpp /Fo:obj/bn_c384_256.obj /I include /DMCL_FP_BIT=384 /DMCL_FR_BIT=256
+        lib /out:lib/mclbn384_256.lib obj/bn_c384_256.obj
         cd ..
       shell: cmd
     
