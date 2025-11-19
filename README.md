@@ -2,6 +2,8 @@
 
 A Python 3 wrapper for the [mcl](https://github.com/herumi/mcl) library. Currently support operations on BLS12-381 curve.
 
+**Requirements:** Python 3.7 or higher
+
 ## Installation
 
 First, clone this repository using following command:
@@ -37,6 +39,19 @@ x2 = pymcl.Fr.random() # random element in Fr
 
 # check the correctness of the pairing
 assert pymcl.pairing(g1 * x1, g2 * x2) == pymcl.pairing(g1, g2) ** (x1 * x2)
+```
+
+## Type Hints
+
+pymcl includes type stubs for better IDE support and type checking. Type checkers like mypy and pyright, as well as IDEs like VS Code and PyCharm, will provide autocomplete and type checking for pymcl:
+
+```python
+import pymcl
+
+# IDEs will provide autocomplete and type information
+fr: pymcl.Fr = pymcl.Fr.random()
+g1: pymcl.G1 = pymcl.g1
+gt: pymcl.GT = pymcl.pairing(g1, pymcl.g2)
 ```
 
 ## Other Operations
