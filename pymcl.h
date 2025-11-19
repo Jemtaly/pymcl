@@ -18,7 +18,6 @@
 * This file contains the types and functions needed to use MCL from Python 3.  *
 *******************************************************************************/
 
-// We're going to need a few types
 // the G1 type
 typedef struct {
     PyObject_HEAD
