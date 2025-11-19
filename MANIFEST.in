@@ -1,0 +1,7 @@
+include pymcl.pyi
+include py.typed
+include pymcl.h
+include LICENSE
+include README.md
+include install.sh
+include install.bat
