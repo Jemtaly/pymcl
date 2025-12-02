@@ -2,25 +2,17 @@
 
 A Python 3 wrapper for the [mcl](https://github.com/herumi/mcl) library. Currently support operations on BLS12-381 curve.
 
-## Installation
+## Requirements
 
-First, clone this repository using following command:
+- Python 3.7+
+- pybind11
+- GCC/Clang (to build mcl)
+
+## Installation
 
 ```sh
 git clone https://github.com/Jemtaly/pymcl
-cd pymcl
-```
-
-Then install the library:
-
-**For Debian-based systems (Debian, Ubuntu, Kali, etc.), you can simply install the library using the provided `install.sh` script.**
-
-For other platforms, to use pymcl, you need to build the mcl library from source first, follow the instructions [here](https://github.com/herumi/mcl/blob/master/readme.md).
-
-After building the mcl library, make sure you place the whole `mcl` library directory (which contains `lib` and `include` folders) in current directory, then, you can install the package using the following command:
-
-```bash
-pip install .
+pip install pymcl
 ```
 
 ## Basic Usage

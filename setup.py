@@ -1,33 +1,55 @@
 #!/usr/bin/env python3
 
-from sys import platform
-from setuptools import Extension, setup
+import subprocess
+import sys
+from pathlib import Path
+from setuptools import setup
 
-if platform == "win32":
-    pymcl_module = Extension(
-        "pymcl",
-        sources=["pymcl.c"],
-        include_dirs=["mcl/include"],
-        extra_objects=["mcl/lib/mcl.lib"],
-    )
-else:
-    pymcl_module = Extension(
-        "pymcl",
-        sources=["pymcl.c"],
-        include_dirs=["mcl/include"],
-        extra_objects=["mcl/lib/libmcl.a"],
-        libraries=["stdc++"],
-    )
+from pybind11.setup_helpers import Pybind11Extension, build_ext
+
+IS_WINDOWS = sys.platform == "win32"
+
+ROOT = Path(__file__).parent.resolve()
+VENDOR_DIR = ROOT / "vendor"
+MCL_DIR = VENDOR_DIR / "mcl"
+
+
+class CustomBuildExt(build_ext):
+    """Custom build_ext command to build the mcl library before building the extension."""
+
+    def run(self):
+        self.build_mcl()
+        super().run()
+
+    def build_mcl(self):
+        if not MCL_DIR.exists():
+            print("Cloning mcl repository...")
+            subprocess.check_call(["git", "clone", "https://github.com/herumi/mcl", str(MCL_DIR)])
+
+        print("Building mcl library...")
+        if IS_WINDOWS:
+            subprocess.check_call(["mklib.bat"], cwd=MCL_DIR, shell=True)
+        else:
+            subprocess.check_call(["make", "-j4"], cwd=MCL_DIR)
+
+
+MCL_INCLUDE_DIR = MCL_DIR / "include"
+MCL_LIBRARY_DIR = MCL_DIR / "lib"
+MCL_LIB = MCL_LIBRARY_DIR / ("mcl.lib" if IS_WINDOWS else "libmcl.a")
+
+module = Pybind11Extension(
+    "pymcl._pymcl",
+    sources=["src/pymcl/_pymcl.cpp"],
+    include_dirs=[str(MCL_INCLUDE_DIR)],
+    extra_objects=[str(MCL_LIB)],
+)
+
+ext_modules = [module]
 
 setup(
-    name="pymcl",
-    version="1.0",
-    description="Python bindings for the mcl library",
-    author="Jemtaly",
-    author_email="Jemtaly@outlook.com",
-    url="https://www.github.com/Jemtaly/pymcl",
-    ext_modules=[pymcl_module],
+    ext_modules=ext_modules,
+    cmdclass={"build_ext": CustomBuildExt},
     packages=["pymcl"],
-    package_data={"pymcl": ["py.typed", "__init__.pyi"]},
+    package_data={"pymcl": ["_pymcl.pyi", "py.typed"]},
     include_package_data=True,
 )
