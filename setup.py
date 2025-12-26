@@ -10,8 +10,8 @@ from pybind11.setup_helpers import Pybind11Extension, build_ext
 IS_WINDOWS = sys.platform == "win32"
 
 ROOT = Path(__file__).parent.resolve()
-VENDOR_DIR = ROOT / "vendor"
-MCL_DIR = VENDOR_DIR / "mcl"
+CACHE_DIR = ROOT / ".cache"
+MCL_DIR = CACHE_DIR / "mcl"
 
 
 class CustomBuildExt(build_ext):
@@ -39,7 +39,7 @@ MCL_LIB = MCL_LIBRARY_DIR / ("mcl.lib" if IS_WINDOWS else "libmcl.a")
 
 module = Pybind11Extension(
     "pymcl._pymcl",
-    sources=["src/pymcl/_pymcl.cpp"],
+    sources=["csrc/pymcl/_pymcl.cpp"],
     include_dirs=[str(MCL_INCLUDE_DIR)],
     extra_objects=[str(MCL_LIB)],
 )
@@ -49,6 +49,7 @@ ext_modules = [module]
 setup(
     ext_modules=ext_modules,
     cmdclass={"build_ext": CustomBuildExt},
+    package_dir={"": "src"},
     packages=["pymcl"],
     package_data={"pymcl": ["_pymcl.pyi", "py.typed"]},
     include_package_data=True,
