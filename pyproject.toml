@@ -19,6 +19,16 @@ classifiers = [
 ]
 requires-python = ">=3.7"
 
+[project.optional-dependencies]
+test = [
+    "pytest>=7",
+]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+
 [project.urls]
 Homepage = "https://www.github.com/Jemtaly/pymcl"
 Repository = "https://www.github.com/Jemtaly/pymcl"
