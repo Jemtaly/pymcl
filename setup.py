@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -28,7 +29,7 @@ class CustomBuildExt(build_ext):
 
         print("Building mcl library...")
         if IS_WINDOWS:
-            subprocess.check_call(["mklib.bat"], cwd=MCL_DIR, shell=True)
+            subprocess.check_call(["mklib.bat"], cwd=MCL_DIR, shell=True, env=os.environ | {"CL": "/MD"})
         else:
             subprocess.check_call(["make", "-j4"], cwd=MCL_DIR)
 
