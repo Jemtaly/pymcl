@@ -11,4 +11,4 @@ __all__ = [
     "pairing",
 ]
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"

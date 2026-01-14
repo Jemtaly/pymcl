@@ -22,6 +22,10 @@ def test_fr():
     assert (x + y) * z == x * z + y * z
     assert (x - y) * z == x * z - y * z
 
+    s = z.sqr()
+    r = s.sqrt()
+    assert r is not None and r * r == s
+
 
 def test_g1():
     p1 = G1.hash(b"pymcl-g1")

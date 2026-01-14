@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pymcl"
-version = "1.0.0"
+version = "1.0.1"
 description = "A Python 3 wrapper for the mcl library (BLS12-381) using Pybind11."
 authors = [
     { name = "Jemtaly", email = "Jemtaly@outlook.com" },

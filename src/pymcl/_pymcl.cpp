@@ -123,7 +123,20 @@ PYBIND11_MODULE(_pymcl, m) {
             Fr res;
             Fr::inv(res, self);
             return res;
-        });
+        })
+        .def("sqr", [](Fr const &self) {
+            Fr res;
+            Fr::sqr(res, self);
+            return res;
+        }, "Returns the square of the Fr element.")
+        .def("sqrt", [](Fr const &self) -> py::object {
+            Fr res;
+            if (Fr::squareRoot(res, self)) {
+                return py::cast(res);
+            } else {
+                return py::none();
+            }
+        }, "Returns the square root of the Fr element if it exists; otherwise returns None.");
 
     // -------------------------------------------------------------------------
     // G1 Class
