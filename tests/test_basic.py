@@ -53,7 +53,7 @@ def test_g2():
 
     assert not p2.is_zero()
     assert z2.is_zero()
-    
+
     assert p2 * x + p2 * y == p2 * (x + y)
     assert p2 * x - p2 * y == p2 * (x - y)
     assert -p2 + p2 == z2
@@ -65,7 +65,7 @@ def test_gt():
     e = pairing(g1, g2)
     x = Fr.random()
     y = Fr.random()
-    
+
     assert zero.is_zero() and not zero.is_one()
     assert one.is_one() and not one.is_zero()
 
