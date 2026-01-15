@@ -98,6 +98,7 @@ module = Pybind11Extension(
     include_dirs=[str(MCL_INCLUDE_DIR)],
     extra_objects=[str(MCL_LIB)],
 )
+module.cxx_std = 17  # Require C++17 standard
 
 
 setup(
