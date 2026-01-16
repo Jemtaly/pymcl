@@ -11,14 +11,17 @@ authors = [
 ]
 readme = "README.md"
 license = { file = "LICENSE" }
+keywords = ["pairing-based cryptography", "cryptography", "bls12-381", "pybind11"]
 classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Security :: Cryptography",
 ]
 requires-python = ">=3.10"
 
