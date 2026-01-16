@@ -1,0 +1,161 @@
+name: Build and Publish
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Publish to PyPI (yes/no)"
+        required: true
+        default: "no"
+
+jobs:
+  build_sdist:
+    name: Build source distribution
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends build-essential nasm
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade build twine
+
+      - name: Build sdist
+        run: python -m build --sdist
+
+      - name: Check sdist
+        run: python -m twine check --strict dist/*
+
+      - name: Upload sdist
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdist
+          path: dist/*.tar.gz
+          retention-days: 5
+
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }} for ${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux builds
+          - os: ubuntu-latest
+            arch: x86_64
+            build: "manylinux_x86_64"
+          - os: ubuntu-latest
+            arch: aarch64
+            build: "manylinux_aarch64"
+
+          # macOS builds
+          - os: macos-13  # Intel x86_64
+            arch: x86_64
+            build: "macosx_x86_64"
+          - os: macos-14  # Apple Silicon ARM64
+            arch: arm64
+            build: "macosx_arm64"
+
+          # Windows builds
+          - os: windows-latest
+            arch: AMD64
+            build: "win_amd64"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up MSVC (Windows)
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Set up QEMU (for ARM builds on Linux)
+        if: runner.os == 'Linux' && matrix.arch == 'aarch64'
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.19
+        env:
+          CIBW_BUILD: "cp310-${{ matrix.build }} cp311-${{ matrix.build }} cp312-${{ matrix.build }}"
+          CIBW_ARCHS: ${{ matrix.arch }}
+          # Test installation
+          CIBW_TEST_REQUIRES: pytest
+          CIBW_TEST_COMMAND: "pytest {project}/tests -v"
+          # Build settings
+          CIBW_BUILD_VERBOSITY: 1
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-${{ matrix.os }}-${{ matrix.arch }}
+          path: ./wheelhouse/*.whl
+          retention-days: 5
+
+  publish_github:
+    name: Publish to GitHub Release
+    needs: [build_sdist, build_wheels]
+    runs-on: ubuntu-latest
+    if: (github.event_name == 'workflow_dispatch' && github.event.inputs.publish == 'yes') || startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Display structure of downloaded files
+        run: ls -R dist
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+
+  publish_pypi:
+    name: Publish to PyPI
+    needs: [build_sdist, build_wheels]
+    runs-on: ubuntu-latest
+    if: (github.event_name == 'workflow_dispatch' && github.event.inputs.publish == 'yes') || startsWith(github.ref, 'refs/tags/v')
+    environment:
+      name: pypi
+      url: https://pypi.org/p/pymcl
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Display structure of downloaded files
+        run: ls -R dist
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true
