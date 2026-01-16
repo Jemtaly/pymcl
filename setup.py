@@ -94,11 +94,11 @@ class CustomBuildExt(build_ext):
 
 module = Pybind11Extension(
     "pymcl._pymcl",
+    cxx_std=17,
     sources=["src/pymcl/_pymcl.cpp"],
     include_dirs=[str(MCL_INCLUDE_DIR)],
     extra_objects=[str(MCL_LIB)],
 )
-module.cxx_std = 17  # Require C++17 standard
 
 
 setup(

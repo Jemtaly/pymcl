@@ -6,6 +6,12 @@
 
 A Python 3 wrapper for the [mcl](https://github.com/herumi/mcl) library. Currently support operations on BLS12-381 curve.
 
+## Requirements
+
+- Python 3.10 or higher
+
+If you want to build from source, please check [readme of mcl](https://github.com/herumi/mcl/blob/master/readme.md).
+
 ## Installation
 
 Install from PyPI (recommended):
