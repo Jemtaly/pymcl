@@ -1,19 +1,32 @@
 # pymcl
 
+[![PyPI version](https://badge.fury.io/py/pymcl.svg)](https://pypi.org/project/pymcl/)
+[![CI](https://github.com/Jemtaly/pymcl/actions/workflows/ci.yml/badge.svg)](https://github.com/Jemtaly/pymcl/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A Python 3 wrapper for the [mcl](https://github.com/herumi/mcl) library. Currently support operations on BLS12-381 curve.
-
-## Requirements
-
-- Python 3.7+
-- pybind11
-- GCC/Clang (to build mcl)
 
 ## Installation
 
+Install from PyPI (recommended):
+
 ```sh
-git clone https://github.com/Jemtaly/pymcl
 pip install pymcl
 ```
+
+Or install from source:
+
+```sh
+git clone https://github.com/Jemtaly/pymcl
+cd pymcl
+pip install .
+```
+
+### Supported Platforms
+
+- **Linux**: x86_64, aarch64 (ARM64)
+- **macOS**: x86_64 (Intel), arm64 (Apple Silicon), universal2
+- **Windows**: AMD64 (x64)
 
 ## Basic Usage
 
